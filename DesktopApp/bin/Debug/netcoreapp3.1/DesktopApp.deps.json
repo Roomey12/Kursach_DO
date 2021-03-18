@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "DesktopApp/1.0.0": {
+        "dependencies": {
+          "Kursach": "1.0.0"
+        },
+        "runtime": {
+          "DesktopApp.dll": {}
+        }
+      },
+      "Kursach/1.0.0": {
+        "runtime": {
+          "Kursach.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DesktopApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Kursach/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

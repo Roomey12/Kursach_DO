@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Kursach.Helpers;
-using Kursach.Models;
 
 namespace Kursach
 {
@@ -9,14 +9,11 @@ namespace Kursach
     {
         static void Main(string[] args)
         {
-            var performers = new List<Performer>();
-            var tasks = new List<Task>();
-            var efficiencies = Data.GetData(5, 7, out performers, out tasks);
+            var data = Data.Get3by4Matrix();
+            Output.Data(data);
 
-            var output = new Output();
-            output.OutputList(performers);
-            output.OutputList(tasks);
-            output.OutputList(efficiencies);
+            var result = LutsenkoAlgorithm.Handle(data);
+            Output.Result(result);
         }
     }
 }

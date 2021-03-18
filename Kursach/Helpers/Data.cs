@@ -1,37 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Kursach.Models;
 
 namespace Kursach.Helpers
 {
     public static class Data
     {
-        public static List<Efficiency> GetData(int performersCount, int tasksCount, out List<Performer> performers, out List<Task> tasks)
+        public static List<List<int>> Get3by4Matrix()
         {
-            performers = new List<Performer>();
-            for (int i = 1; i <= performersCount; i++)
+            return new List<List<int>>()
             {
-                performers.Add(new Performer($"P{i}"));
-            }
+                    new List<int>() {2, 9, 6, 5},
+                    new List<int>() {2, 3, 5, 7},
+                    new List<int>() {5, 5, 6, 2}
+            };
+        }
 
-            tasks = new List<Task>();
-            for (int i = 1; i <= tasksCount; i++)
+        public static List<List<int>> Get3by5Matrix()
+        {
+            return new List<List<int>>() 
             {
-                tasks.Add(new Task($"T{i}"));
-            }
-
-            var random = new Random();
-            var efficiencies = new List<Efficiency>();
-            for (int i = 0; i < performersCount; i++)
-            {
-                for (int j = 0; j < tasksCount; j++)
-                {
-                    efficiencies.Add(new Efficiency(performers[i], tasks[j], random.Next(0, 10)));
-                }
-            }
-
-            return efficiencies;
+                new List<int>() {2, 9, 7, 5, 4},
+                new List<int>() {2, 3, 5, 7, 4},
+                new List<int>() {5, 5, 6, 2, 8}
+            };
         }
     }
 }
