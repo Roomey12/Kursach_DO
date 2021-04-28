@@ -27,19 +27,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Oleksandr_Lutsenko1\\.nuget\\packages\\": {}
+    "C:\\Users\\Simon_El_Mansoury\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Oleksandr_Lutsenko1\\source\\repos\\Kursach\\DesktopApp\\DesktopApp.csproj",
+      "projectUniqueName": "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\DesktopApp\\DesktopApp.csproj",
       "projectName": "DesktopApp",
-      "projectPath": "C:\\Users\\Oleksandr_Lutsenko1\\source\\repos\\Kursach\\DesktopApp\\DesktopApp.csproj",
-      "packagesPath": "C:\\Users\\Oleksandr_Lutsenko1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Oleksandr_Lutsenko1\\source\\repos\\Kursach\\DesktopApp\\obj\\",
+      "projectPath": "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\DesktopApp\\DesktopApp.csproj",
+      "packagesPath": "C:\\Users\\Simon_El_Mansoury\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\DesktopApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Oleksandr_Lutsenko1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Simon_El_Mansoury\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -47,14 +47,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://bams-aws.refinitiv.com/artifactory/api/nuget/default.nuget.cloud": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\Oleksandr_Lutsenko1\\source\\repos\\Kursach\\Kursach\\Kursach.csproj": {
-              "projectPath": "C:\\Users\\Oleksandr_Lutsenko1\\source\\repos\\Kursach\\Kursach\\Kursach.csproj"
+            "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\Kursach\\Kursach.csproj": {
+              "projectPath": "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\Kursach\\Kursach.csproj"
             }
           }
         }
@@ -86,7 +87,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -11,3 +11,16 @@ C:\Users\Oleksandr_Lutsenko1\source\repos\Kursach\Kursach\obj\Debug\netcoreapp3.
 C:\Users\Oleksandr_Lutsenko1\source\repos\Kursach\Kursach\obj\Debug\netcoreapp3.1\Kursach.dll
 C:\Users\Oleksandr_Lutsenko1\source\repos\Kursach\Kursach\obj\Debug\netcoreapp3.1\Kursach.pdb
 C:\Users\Oleksandr_Lutsenko1\source\repos\Kursach\Kursach\obj\Debug\netcoreapp3.1\Kursach.genruntimeconfig.cache
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\obj\Debug\netcoreapp3.1\Kursach.csprojAssemblyReference.cache
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\obj\Debug\netcoreapp3.1\Kursach.AssemblyInfoInputs.cache
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\obj\Debug\netcoreapp3.1\Kursach.AssemblyInfo.cs
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\obj\Debug\netcoreapp3.1\Kursach.csproj.CoreCompileInputs.cache
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\obj\Debug\netcoreapp3.1\Kursach.dll
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\obj\Debug\netcoreapp3.1\Kursach.pdb
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\bin\Debug\netcoreapp3.1\Kursach.exe
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\bin\Debug\netcoreapp3.1\Kursach.deps.json
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\bin\Debug\netcoreapp3.1\Kursach.runtimeconfig.json
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\bin\Debug\netcoreapp3.1\Kursach.runtimeconfig.dev.json
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\bin\Debug\netcoreapp3.1\Kursach.dll
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\bin\Debug\netcoreapp3.1\Kursach.pdb
+C:\Users\Simon_El_Mansoury\source\repos\Kursach_DO\Kursach\obj\Debug\netcoreapp3.1\Kursach.genruntimeconfig.cache

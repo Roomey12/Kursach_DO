@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ElMansoury;
+
 using Kursach.Helpers;
+
+using System;
 
 namespace Kursach
 {
@@ -14,6 +15,14 @@ namespace Kursach
 
             var result = LutsenkoAlgorithm.Handle(data);
             Output.Result(result);
+
+
+            Console.WriteLine(new string('-', 40));
+            var x = new ElMansouryAlgorithm(9, 7);
+            x.FillData(8);
+            x.GenerateAllMatrices();
+            Console.WriteLine(new string('-', 40));
+            x.FindOptimalDistribution();
         }
     }
 }
