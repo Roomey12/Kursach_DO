@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Simon_El_Mansoury\\.nuget\\packages\\": {}
+    "C:\\Users\\Oleksandr_Lutsenko1\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\Kursach\\Kursach.csproj",
+      "projectUniqueName": "C:\\Users\\Oleksandr_Lutsenko1\\Desktop\\Kurc\\Kursach_DO\\Kursach\\Kursach.csproj",
       "projectName": "Kursach",
-      "projectPath": "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\Kursach\\Kursach.csproj",
-      "packagesPath": "C:\\Users\\Simon_El_Mansoury\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Simon_El_Mansoury\\source\\repos\\Kursach_DO\\Kursach\\obj\\",
+      "projectPath": "C:\\Users\\Oleksandr_Lutsenko1\\Desktop\\Kurc\\Kursach_DO\\Kursach\\Kursach.csproj",
+      "packagesPath": "C:\\Users\\Oleksandr_Lutsenko1\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Oleksandr_Lutsenko1\\Desktop\\Kurc\\Kursach_DO\\Kursach\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Simon_El_Mansoury\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Oleksandr_Lutsenko1\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -28,8 +28,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://bams-aws.refinitiv.com/artifactory/api/nuget/default.nuget.cloud": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
@@ -61,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
       }
     }
   }

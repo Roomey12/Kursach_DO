@@ -34,6 +34,7 @@ namespace DesktopApp
             this.workersTextBox = new System.Windows.Forms.TextBox();
             this.tasksTextBox = new System.Windows.Forms.TextBox();
             this.createMatrixButton = new System.Windows.Forms.Button();
+            this.fileButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -41,9 +42,9 @@ namespace DesktopApp
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(28, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 15);
+            this.label1.Size = new System.Drawing.Size(100, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "К-сть робітників";
+            this.label1.Text = "К-сть виконавців";
             // 
             // label2
             // 
@@ -78,11 +79,22 @@ namespace DesktopApp
             this.createMatrixButton.UseVisualStyleBackColor = true;
             this.createMatrixButton.Click += new System.EventHandler(this.createMatrixButton_Click);
             // 
+            // fileButton
+            // 
+            this.fileButton.Location = new System.Drawing.Point(390, 26);
+            this.fileButton.Name = "fileButton";
+            this.fileButton.Size = new System.Drawing.Size(86, 39);
+            this.fileButton.TabIndex = 5;
+            this.fileButton.Text = "Матриця з файлу";
+            this.fileButton.UseVisualStyleBackColor = true;
+            this.fileButton.Click += new System.EventHandler(this.fileButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(899, 527);
+            this.Controls.Add(this.fileButton);
             this.Controls.Add(this.createMatrixButton);
             this.Controls.Add(this.tasksTextBox);
             this.Controls.Add(this.workersTextBox);
@@ -99,10 +111,10 @@ namespace DesktopApp
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tasksTextBox1;
         private System.Windows.Forms.TextBox tasksTextBox;
         private System.Windows.Forms.Button createMatrixButton;
         private System.Windows.Forms.TextBox workersTextBox;
+        private System.Windows.Forms.Button fileButton;
     }
 }
 
