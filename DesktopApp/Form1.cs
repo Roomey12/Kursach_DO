@@ -1,14 +1,10 @@
-﻿using DesktopApp.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DesktopApp
@@ -74,7 +70,7 @@ namespace DesktopApp
                     var list = new List<int>();
                     for (int j = 0; j < TasksCount; j++)
                     {
-                        list.Add(Int32.Parse(Controls[i.ToString() + " " + j.ToString()].Text));
+                        list.Add(Int32.Parse(Controls[i + " " + j].Text));
                     }
                     data.Add(list);
                 }
@@ -92,7 +88,7 @@ namespace DesktopApp
                 int cf = 0;
                 for (int i = 0; i < result.Count; i++)
                 {
-                    Controls[result[i][0].ToString() + " " + result[i][1].ToString()].BackColor = Color.LimeGreen;
+                    Controls[result[i][0] + " " + result[i][1]].BackColor = Color.LimeGreen;
                     cf += dataCopy[result[i][0]][result[i][1]];
                 }
 
@@ -117,7 +113,7 @@ namespace DesktopApp
             {
                 for (int j = 0; j < TasksCount; j++)
                 {
-                    Controls[i.ToString() + " " + j.ToString()].Text = random.Next(1, 20).ToString();
+                    Controls[i + " " + j].Text = random.Next(1, 20).ToString();
                 }
             }
         }
@@ -152,7 +148,7 @@ namespace DesktopApp
                     {
                         for (int j = 0; j < tasksCount; j++)
                         {
-                            Controls[i.ToString() + " " + j.ToString()].Text = fileData[i][j].ToString();
+                            Controls[i + " " + j].Text = fileData[i][j].ToString();
                         }
                     }
                 }
@@ -268,7 +264,7 @@ namespace DesktopApp
                 {
                     var effTextBox = new TextBox()
                     {
-                        Name = i.ToString() + " " + j.ToString(),
+                        Name = i + " " + j,
                         Location = new Point(j * 75 + 54, i * 50 + 125),
                         Size = new Size(50, 10)
                     };
