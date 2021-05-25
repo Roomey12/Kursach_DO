@@ -1,6 +1,9 @@
-﻿using System;
+﻿using DesktopApp.Enum;
+
+using Kursach.Algorithms;
+
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -80,8 +83,8 @@ namespace DesktopApp
                 stopwatch.Start();
 
                 //var result = algorithm == Algorithm.Lutsenko ? LutsenkoAlgorithm.Handle(data) : ; 
-
-                var result = LutsenkoAlgorithm.Handle(data);
+                IAlgorithm luts = new LutsenkoAlgorithm();
+                var result = luts.Handle(data);
 
                 stopwatch.Stop();
 

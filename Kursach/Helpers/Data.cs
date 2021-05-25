@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Kursach.Helpers
 {
@@ -18,7 +16,7 @@ namespace Kursach.Helpers
 
         public static List<List<int>> Get3by5Matrix()
         {
-            return new List<List<int>>() 
+            return new List<List<int>>()
             {
                 new List<int>() {2, 9, 7, 5, 4},
                 new List<int>() {2, 3, 5, 7, 4},
