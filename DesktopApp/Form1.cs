@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DesktopApp.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -27,7 +29,9 @@ namespace DesktopApp
             {
                 ValidateInputData();
 
-                CreateCalculateButton();
+                CreateCalculateLutsenkoButton();
+
+                CreateCalculateMansouryButton();
 
                 CreateRandomButton();
 
@@ -49,7 +53,17 @@ namespace DesktopApp
             }
         }
 
-        private void calculateButton_Click(object sender, EventArgs e)
+        private void calculateLutsenkoButton_Click(object sender, EventArgs e)
+        {
+            ProcessAlgorithm(Algorithm.Lutsenko);
+        }
+
+        private void calculateMansouryButton_Click(object sender, EventArgs e)
+        {
+            ProcessAlgorithm(Algorithm.Mansoury);
+        }
+
+        private void ProcessAlgorithm(Algorithm algorithm)
         {
             try
             {
@@ -60,18 +74,25 @@ namespace DesktopApp
                     var list = new List<int>();
                     for (int j = 0; j < TasksCount; j++)
                     {
-                        list.Add(Int32.Parse(Controls[i.ToString() + j.ToString()].Text));
+                        list.Add(Int32.Parse(Controls[i.ToString() + " " + j.ToString()].Text));
                     }
                     data.Add(list);
                 }
                 var dataCopy = data.Select(x => x.ToList()).ToList();
 
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                //var result = algorithm == Algorithm.Lutsenko ? LutsenkoAlgorithm.Handle(data) : ; 
+
                 var result = LutsenkoAlgorithm.Handle(data);
+
+                stopwatch.Stop();
 
                 int cf = 0;
                 for (int i = 0; i < result.Count; i++)
                 {
-                    Controls[result[i][0].ToString() + result[i][1].ToString()].BackColor = Color.LimeGreen;
+                    Controls[result[i][0].ToString() + " " + result[i][1].ToString()].BackColor = Color.LimeGreen;
                     cf += dataCopy[result[i][0]][result[i][1]];
                 }
 
@@ -79,13 +100,15 @@ namespace DesktopApp
 
                 DisableOutputButtons();
 
+                CreateTimeControl(stopwatch.Elapsed);
+
                 ActiveControl = null;
-        }
-            catch(FormatException)
+            }
+            catch (FormatException)
             {
                 MessageBox.Show("Ефективність виконання задачі повинна бути числом.");
             }
-}
+        }
 
         private void randomButton_Click(object sender, EventArgs e)
         {
@@ -94,7 +117,7 @@ namespace DesktopApp
             {
                 for (int j = 0; j < TasksCount; j++)
                 {
-                    Controls[i.ToString() + j.ToString()].Text = random.Next(1,20).ToString();
+                    Controls[i.ToString() + " " + j.ToString()].Text = random.Next(1, 20).ToString();
                 }
             }
         }
@@ -121,13 +144,15 @@ namespace DesktopApp
 
                     DisableInputButtons();
 
-                    CreateCalculateButton();
+                    CreateCalculateLutsenkoButton();
+
+                    CreateCalculateMansouryButton();
 
                     for (int i = 0; i < workersCount; i++)
                     {
                         for (int j = 0; j < tasksCount; j++)
                         {
-                            Controls[i.ToString() + j.ToString()].Text = fileData[i][j].ToString();
+                            Controls[i.ToString() + " " + j.ToString()].Text = fileData[i][j].ToString();
                         }
                     }
                 }
@@ -157,16 +182,29 @@ namespace DesktopApp
             }
         }
 
-        private void CreateCalculateButton()
+        private void CreateCalculateLutsenkoButton()
         {
             var calculateButton = new Button()
             {
-                Name = "calculateButton",
-                Text = "Підрахувати",
+                Name = "calculateLutsenkoButton",
+                Text = "Підрахувати Луценко",
                 Location = new Point(506, 26),
                 Size = new Size(86, 39)
             };
-            calculateButton.Click += new EventHandler(calculateButton_Click);
+            calculateButton.Click += new EventHandler(calculateLutsenkoButton_Click);
+            Controls.Add(calculateButton);
+        }
+
+        private void CreateCalculateMansouryButton()
+        {
+            var calculateButton = new Button()
+            {
+                Name = "calculateMansouryButton",
+                Text = "Підрахувати Ель-Мансурі",
+                Location = new Point(622, 26),
+                Size = new Size(86, 39)
+            };
+            calculateButton.Click += new EventHandler(calculateMansouryButton_Click);
             Controls.Add(calculateButton);
         }
 
@@ -176,11 +214,32 @@ namespace DesktopApp
             {
                 Name = "randomButton",
                 Text = "Random",
-                Location = new Point(622, 26),
+                Location = new Point(738, 26),
                 Size = new Size(86, 39)
             };
             randomButton.Click += new EventHandler(randomButton_Click);
             Controls.Add(randomButton);
+        }
+
+        private void CreateTimeControl(TimeSpan time)
+        {
+            var timeLabel = new Label()
+            {
+                Name = "timeLabel",
+                Text = "Time:",
+                Location = new Point(834, 28),
+                Size = new Size(40, 20)
+            };
+
+            var timeTextBox = new TextBox()
+            {
+                Name = "timeLabel",
+                Text = time.ToString(),
+                Location = new Point(877, 26),
+                Size = new Size(100, 20)
+            };
+            Controls.Add(timeLabel);
+            Controls.Add(timeTextBox);
         }
 
         private void CreateMatrixControls()
@@ -202,14 +261,14 @@ namespace DesktopApp
                 {
                     Text = $"Вик. {i + 1}",
                     Location = new Point(8, i * 50 + 128),
-                    Size = new Size(40, 20)
+                    Size = new Size(46, 20)
                 };
                 Controls.Add(label);
                 for (int j = 0; j < TasksCount; j++)
                 {
                     var effTextBox = new TextBox()
                     {
-                        Name = i.ToString() + j.ToString(),
+                        Name = i.ToString() + " " + j.ToString(),
                         Location = new Point(j * 75 + 54, i * 50 + 125),
                         Size = new Size(50, 10)
                     };
@@ -253,7 +312,8 @@ namespace DesktopApp
 
         private void DisableOutputButtons()
         {
-            Controls["calculateButton"].Enabled = false;
+            Controls["calculateLutsenkoButton"].Enabled = false;
+            Controls["calculateMansouryButton"].Enabled = false;
             if (Controls.ContainsKey("randomButton"))
             {
                 Controls["randomButton"].Enabled = false;
