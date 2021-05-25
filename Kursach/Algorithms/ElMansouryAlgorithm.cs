@@ -7,11 +7,6 @@ namespace Kursach.Algorithms
 {
     public class ElMansouryAlgorithm : IAlgorithm
     {
-        public override string ToString()
-        {
-            return "\nEl Mansoury Algorithm\n";
-        }
-
         private List<List<int>> _data { get; set; }
         private List<List<List<int>>> PermutationMatrices { get; set; } = new();
         private int WorkAmount { get; set; }
@@ -23,15 +18,6 @@ namespace Kursach.Algorithms
             //Console.WriteLine(new string('-', 40));
 
             return FindOptimalDistribution();
-        }
-
-
-        private void OutputMatrix(List<List<int>> data)
-        {
-            for (var i = 0; i < data.Count; i++)
-            {
-                Console.WriteLine($"Worker {i + 1}: {string.Join(" ", data[i])}");
-            }
         }
 
         private List<List<int>> FindOptimalDistribution()
@@ -105,7 +91,9 @@ namespace Kursach.Algorithms
             //Console.WriteLine(new string('-', 40));
 
             //OutputFinalDistribution(shift, optimalDistribution.AsReadOnly());
+
             var z = OutputFinalDistribution1(shift, optimalDistribution.AsReadOnly(), result);
+
             //Console.ForegroundColor = ConsoleColor.Red;
 
             //Console.WriteLine($"MAX EFFICIENCY (final) = {maxDistributionEfficiency + z}");
@@ -113,33 +101,6 @@ namespace Kursach.Algorithms
 
             //Console.WriteLine($"{new string('-', 40)}\n");
             return result;
-        }
-
-        private void OutputFinalDistribution(int shift, ReadOnlyCollection<List<int>> optimalDistribution)
-        {
-            for (var i = 0; i < WorkersNum; i++)
-            {
-                var x = 0;
-                Console.Write($"Worker {i + 1}: ");
-
-                for (var j = 0; j < WorkAmount; j++)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-
-                    if (j >= shift && x < WorkersNum)
-                    {
-                        x++;
-                        Console.ForegroundColor = optimalDistribution[i][j - shift] == 1 ? ConsoleColor.Green : ConsoleColor.Gray;
-                    }
-
-                    Console.Write(_data[i][j] + " ");
-                    Console.ResetColor();
-                }
-
-                Console.WriteLine();
-            }
-
-            Console.WriteLine();
         }
 
         private int OutputFinalDistribution1(int shift, ReadOnlyCollection<List<int>> optimalDistribution, List<List<int>> result)
@@ -164,10 +125,10 @@ namespace Kursach.Algorithms
                 }
             }
 
-            return FindGreedy(unUsedWork, result);
+            return FindRemaining(unUsedWork, result);
         }
 
-        private int FindGreedy(IReadOnlyList<List<int>> efficiencyMatrix, List<List<int>> result)
+        private int FindRemaining(IReadOnlyList<List<int>> efficiencyMatrix, List<List<int>> result) 
         {
             var efficiency = 0;
             List<KeyValuePair<int, int>> indexes = new List<KeyValuePair<int, int>>();

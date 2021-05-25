@@ -1,13 +1,15 @@
 ﻿using DesktopApp.Enum;
-
 using Kursach.Algorithms;
-
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DesktopApp
@@ -31,6 +33,8 @@ namespace DesktopApp
                 CreateCalculateLutsenkoButton();
 
                 CreateCalculateMansouryButton();
+
+                CreateCalculateGreedyButton();
 
                 CreateRandomButton();
 
@@ -62,6 +66,11 @@ namespace DesktopApp
             ProcessAlgorithm(Algorithm.Mansoury);
         }
 
+        private void calculateGreedyButton_Click(object sender, EventArgs e)
+        {
+            ProcessAlgorithm(Algorithm.Greedy);
+        }
+
         private void ProcessAlgorithm(Algorithm algorithm)
         {
             try
@@ -73,25 +82,38 @@ namespace DesktopApp
                     var list = new List<int>();
                     for (int j = 0; j < TasksCount; j++)
                     {
-                        list.Add(Int32.Parse(Controls[i + " " + j].Text));
+                        list.Add(Int32.Parse(Controls[i.ToString() + " " + j.ToString()].Text));
                     }
                     data.Add(list);
                 }
                 var dataCopy = data.Select(x => x.ToList()).ToList();
 
+                IAlgorithm algorithmHandler = null;
+
+                switch (algorithm)
+                {
+                    case Algorithm.Lutsenko:
+                        algorithmHandler = new LutsenkoAlgorithm();
+                        break;
+                    case Algorithm.Mansoury:
+                        algorithmHandler = new ElMansouryAlgorithm();
+                        break;
+                    case Algorithm.Greedy:
+                        algorithmHandler = new GreedyAlgorithm();
+                        break;
+                }
+
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                //var result = algorithm == Algorithm.Lutsenko ? LutsenkoAlgorithm.Handle(data) : ; 
-                IAlgorithm luts = new LutsenkoAlgorithm();
-                var result = luts.Handle(data);
+                var result = algorithmHandler.Handle(data);
 
                 stopwatch.Stop();
 
                 int cf = 0;
                 for (int i = 0; i < result.Count; i++)
                 {
-                    Controls[result[i][0] + " " + result[i][1]].BackColor = Color.LimeGreen;
+                    Controls[result[i][0].ToString() + " " + result[i][1].ToString()].BackColor = Color.LimeGreen;
                     cf += dataCopy[result[i][0]][result[i][1]];
                 }
 
@@ -116,7 +138,7 @@ namespace DesktopApp
             {
                 for (int j = 0; j < TasksCount; j++)
                 {
-                    Controls[i + " " + j].Text = random.Next(1, 20).ToString();
+                    Controls[i.ToString() + " " + j.ToString()].Text = random.Next(1, 20).ToString();
                 }
             }
         }
@@ -145,13 +167,15 @@ namespace DesktopApp
 
                     CreateCalculateLutsenkoButton();
 
+                    CreateCalculateGreedyButton();
+
                     CreateCalculateMansouryButton();
 
                     for (int i = 0; i < workersCount; i++)
                     {
                         for (int j = 0; j < tasksCount; j++)
                         {
-                            Controls[i + " " + j].Text = fileData[i][j].ToString();
+                            Controls[i.ToString() + " " + j.ToString()].Text = fileData[i][j].ToString();
                         }
                     }
                 }
@@ -207,13 +231,26 @@ namespace DesktopApp
             Controls.Add(calculateButton);
         }
 
+        private void CreateCalculateGreedyButton()
+        {
+            var calculateButton = new Button()
+            {
+                Name = "calculateGreedyButton",
+                Text = "Підрахувати Жадібний",
+                Location = new Point(738, 26),
+                Size = new Size(86, 39)
+            };
+            calculateButton.Click += new EventHandler(calculateGreedyButton_Click);
+            Controls.Add(calculateButton);
+        }
+
         private void CreateRandomButton()
         {
             var randomButton = new Button()
             {
                 Name = "randomButton",
                 Text = "Random",
-                Location = new Point(738, 26),
+                Location = new Point(854, 26),
                 Size = new Size(86, 39)
             };
             randomButton.Click += new EventHandler(randomButton_Click);
@@ -226,7 +263,7 @@ namespace DesktopApp
             {
                 Name = "timeLabel",
                 Text = "Time:",
-                Location = new Point(834, 28),
+                Location = new Point(950, 28),
                 Size = new Size(40, 20)
             };
 
@@ -234,7 +271,7 @@ namespace DesktopApp
             {
                 Name = "timeLabel",
                 Text = time.ToString(),
-                Location = new Point(877, 26),
+                Location = new Point(993, 26),
                 Size = new Size(100, 20)
             };
             Controls.Add(timeLabel);
@@ -267,7 +304,7 @@ namespace DesktopApp
                 {
                     var effTextBox = new TextBox()
                     {
-                        Name = i + " " + j,
+                        Name = i.ToString() + " " + j.ToString(),
                         Location = new Point(j * 75 + 54, i * 50 + 125),
                         Size = new Size(50, 10)
                     };
@@ -307,12 +344,14 @@ namespace DesktopApp
         {
             Controls["createMatrixButton"].Enabled = false;
             Controls["fileButton"].Enabled = false;
+            ActiveControl = null;
         }
 
         private void DisableOutputButtons()
         {
             Controls["calculateLutsenkoButton"].Enabled = false;
             Controls["calculateMansouryButton"].Enabled = false;
+            Controls["calculateGreedyButton"].Enabled = false;
             if (Controls.ContainsKey("randomButton"))
             {
                 Controls["randomButton"].Enabled = false;

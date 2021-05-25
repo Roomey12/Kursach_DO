@@ -3,6 +3,7 @@
     public enum Algorithm
     {
         Lutsenko,
-        Mansoury
+        Mansoury,
+        Greedy
     }
 }

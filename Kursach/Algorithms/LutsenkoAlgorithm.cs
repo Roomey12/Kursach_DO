@@ -6,10 +6,6 @@ namespace Kursach.Algorithms
 {
     public class LutsenkoAlgorithm : IAlgorithm
     {
-        public override string ToString()
-        {
-            return "\nLutsenko Algorithm\n";
-        }
         public List<List<int>> Handle(List<List<int>> data)
         {
             var dataCopy = data.Select(x => x.ToList()).ToList();
@@ -104,11 +100,8 @@ namespace Kursach.Algorithms
                     }
                 }
 
-                // Размеры матрицы
                 int height = matrix.Count, width = matrix.Sum(x => x.Count) / height;
 
-                // Значения, вычитаемые из строк (u) и столбцов (v)
-                // VInt u(height, 0), v(width, 0);
                 List<int> u = new List<int>(height);
                 List<int> v = new List<int>(width);
 
@@ -122,14 +115,12 @@ namespace Kursach.Algorithms
                     v.Add(0);
                 }
 
-                // Индекс помеченной клетки в каждом столбце
                 List<int> markIndices = new List<int>(width);
                 for (int a = 0; a < width; a++)
                 {
                     markIndices.Add(-1);
                 }
 
-                // Будем добавлять строки матрицы одну за другой
                 int count = 0;
                 for (int i = 0; i < height; i++)
                 {
@@ -144,12 +135,9 @@ namespace Kursach.Algorithms
                         visited.Add(0);
                     }
 
-                    // Разрешение коллизий (создание "чередующейся цепочки" из нулевых элементов)
                     int markedI = i, markedJ = -1, j = 0;
                     while (markedI != -1)
                     {
-                        // Обновим информацию о минимумах в посещенных строках непосещенных столбцов
-                        // Заодно поместим в j индекс непосещенного столбца с самым маленьким из них
                         j = -1;
                         for (int j1 = 0; j1 < width; j1++)
                         {
@@ -165,8 +153,6 @@ namespace Kursach.Algorithms
                             }
                         }
 
-                        // Теперь нас интересует элемент с индексами (markIndices[links[j]], j)
-                        // Произведем манипуляции со строками и столбцами так, чтобы он обнулился
                         int delta = mins[j];
                         for (int j1 = 0; j1 < width; j1++)
                         {
@@ -182,15 +168,12 @@ namespace Kursach.Algorithms
                         }
                         u[i] += delta;
 
-                        // Если коллизия не разрешена - перейдем к следующей итерации
                         visited[j] = 1;
                         markedJ = j;
                         markedI = markIndices[j];
                         count++;
                     }
 
-                    // Пройдем по найденной чередующейся цепочке клеток, снимем отметки с
-                    // отмеченных клеток и поставим отметки на неотмеченные
                     for (; links[j] != -1; j = links[j])
                     {
                         markIndices[j] = markIndices[links[j]];
@@ -198,7 +181,6 @@ namespace Kursach.Algorithms
                     markIndices[j] = i;
                 }
 
-                // Вернем результат в естественной форме
                 List<List<int>> result = new List<List<int>>();
 
                 for (int j = 0; j < width; j++)

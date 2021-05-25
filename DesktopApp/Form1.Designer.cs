@@ -93,7 +93,8 @@ namespace DesktopApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1549, 927);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1217, 777);
             this.Controls.Add(this.fileButton);
             this.Controls.Add(this.createMatrixButton);
             this.Controls.Add(this.tasksTextBox);

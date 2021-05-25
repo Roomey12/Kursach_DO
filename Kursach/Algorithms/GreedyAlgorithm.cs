@@ -7,7 +7,6 @@ namespace Kursach.Algorithms
     {
         private int _workAmount;
         private int _workersNum;
-        private List<List<int>> EfficiencyMatrix { get; set; }
 
         private List<List<int>> FindOptimalDistribution(List<List<int>> efficiencyMatrix)
         {
@@ -75,13 +74,7 @@ namespace Kursach.Algorithms
 
             _workAmount = data.First().Count;
             _workersNum = data.Count;
-            EfficiencyMatrix = data;
             return FindOptimalDistribution(data);
         }
-        public override string ToString()
-        {
-            return "\nGreedy Algorithm\n";
-        }
-
     }
 }
