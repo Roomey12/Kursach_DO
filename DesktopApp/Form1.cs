@@ -5,7 +5,6 @@ using Kursach.Interfaces;
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -82,7 +81,7 @@ namespace DesktopApp
                     var list = new List<int>();
                     for (int j = 0; j < TasksCount; j++)
                     {
-                        list.Add(Int32.Parse(Controls[i.ToString() + " " + j.ToString()].Text));
+                        list.Add(int.Parse(Controls[i + " " + j].Text));
                     }
                     data.Add(list);
                 }
@@ -111,10 +110,10 @@ namespace DesktopApp
                 stopwatch.Stop();
 
                 int cf = 0;
-                for (int i = 0; i < result.Count; i++)
+                foreach (var res in result)
                 {
-                    Controls[result[i][0].ToString() + " " + result[i][1].ToString()].BackColor = Color.LimeGreen;
-                    cf += dataCopy[result[i][0]][result[i][1]];
+                    Controls[res[0] + " " + res[1]].BackColor = Color.LimeGreen;
+                    cf += dataCopy[res[0]][res[1]];
                 }
 
                 CreateCfControls(cf);
@@ -138,7 +137,7 @@ namespace DesktopApp
             {
                 for (int j = 0; j < TasksCount; j++)
                 {
-                    Controls[i.ToString() + " " + j.ToString()].Text = random.Next(1, 20).ToString();
+                    Controls[i + " " + j].Text = random.Next(1, 20).ToString();
                 }
             }
         }
@@ -148,35 +147,37 @@ namespace DesktopApp
             try
             {
                 var fileDialog = new OpenFileDialog();
-                if (fileDialog.ShowDialog() == DialogResult.OK)
+                if (fileDialog.ShowDialog() != DialogResult.OK)
                 {
-                    int[][] fileData = File.ReadAllLines(fileDialog.FileName)
-                       .Select(l => l.Split(' ').Select(i => int.Parse(i)).ToArray())
-                       .ToArray();
+                    return;
+                }
 
-                    var workersCount = fileData.Length;
-                    var tasksCount = fileData.GroupBy(row => row.Length).Single().Key;
+                int[][] fileData = File.ReadAllLines(fileDialog.FileName)
+                    .Select(l => l.Split(' ').Select(int.Parse).ToArray())
+                    .ToArray();
 
-                    SetTasksAndWorkersCount(workersCount, tasksCount);
+                var workersCount = fileData.Length;
+                var tasksCount = fileData.GroupBy(row => row.Length).Single().Key;
 
-                    ValidateInputData();
+                SetTasksAndWorkersCount(workersCount, tasksCount);
 
-                    CreateMatrixControls();
+                ValidateInputData();
 
-                    DisableInputButtons();
+                CreateMatrixControls();
 
-                    CreateCalculateLutsenkoButton();
+                DisableInputButtons();
 
-                    CreateCalculateGreedyButton();
+                CreateCalculateLutsenkoButton();
 
-                    CreateCalculateMansouryButton();
+                CreateCalculateGreedyButton();
 
-                    for (int i = 0; i < workersCount; i++)
+                CreateCalculateMansouryButton();
+
+                for (int i = 0; i < workersCount; i++)
+                {
+                    for (int j = 0; j < tasksCount; j++)
                     {
-                        for (int j = 0; j < tasksCount; j++)
-                        {
-                            Controls[i.ToString() + " " + j.ToString()].Text = fileData[i][j].ToString();
-                        }
+                        Controls[i + " " + j].Text = fileData[i][j].ToString();
                     }
                 }
             }
@@ -196,8 +197,8 @@ namespace DesktopApp
 
         private void ValidateInputData()
         {
-            TasksCount = Int32.Parse(tasksTextBox.Text);
-            WorkersCount = Int32.Parse(workersTextBox.Text);
+            TasksCount = int.Parse(tasksTextBox.Text);
+            WorkersCount = int.Parse(workersTextBox.Text);
 
             if (WorkersCount >= TasksCount)
             {
@@ -214,7 +215,7 @@ namespace DesktopApp
                 Location = new Point(506, 26),
                 Size = new Size(86, 39)
             };
-            calculateButton.Click += new EventHandler(calculateLutsenkoButton_Click);
+            calculateButton.Click += calculateLutsenkoButton_Click;
             Controls.Add(calculateButton);
         }
 
@@ -227,7 +228,7 @@ namespace DesktopApp
                 Location = new Point(622, 26),
                 Size = new Size(86, 39)
             };
-            calculateButton.Click += new EventHandler(calculateMansouryButton_Click);
+            calculateButton.Click += calculateMansouryButton_Click;
             Controls.Add(calculateButton);
         }
 
@@ -240,7 +241,7 @@ namespace DesktopApp
                 Location = new Point(738, 26),
                 Size = new Size(86, 39)
             };
-            calculateButton.Click += new EventHandler(calculateGreedyButton_Click);
+            calculateButton.Click += calculateGreedyButton_Click;
             Controls.Add(calculateButton);
         }
 
@@ -253,7 +254,7 @@ namespace DesktopApp
                 Location = new Point(854, 26),
                 Size = new Size(86, 39)
             };
-            randomButton.Click += new EventHandler(randomButton_Click);
+            randomButton.Click += randomButton_Click;
             Controls.Add(randomButton);
         }
 
@@ -304,7 +305,7 @@ namespace DesktopApp
                 {
                     var effTextBox = new TextBox()
                     {
-                        Name = i.ToString() + " " + j.ToString(),
+                        Name = i + " " + j,
                         Location = new Point(j * 75 + 54, i * 50 + 125),
                         Size = new Size(50, 10)
                     };
