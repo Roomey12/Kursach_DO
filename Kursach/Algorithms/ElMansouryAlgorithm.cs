@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kursach.Interfaces;
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,8 +17,6 @@ namespace Kursach.Algorithms
         private List<List<int>> Start()
         {
             GenerateAllMatrices();
-            //Console.WriteLine(new string('-', 40));
-
             return FindOptimalDistribution();
         }
 
@@ -24,16 +24,11 @@ namespace Kursach.Algorithms
         {
             var maxDistributionEfficiency = 0;
             List<List<int>> optimalDistribution = new List<List<int>>();
-            //Console.ForegroundColor = ConsoleColor.Yellow;
-
-            //Console.WriteLine("\nSTART FINDING OPTIMAL DISTRIBUTION\n");
-            //Console.ResetColor();
 
             int difference = WorkAmount - WorkersNum;
             int shift = -1;
             double progress = 0;
             double part = difference != 0 ? 100 / (difference * (double)PermutationMatrices.Count) : 100 / (double)PermutationMatrices.Count;
-            //Console.WriteLine(new string('-', 40));
 
             while (difference >= 0)
             {
@@ -57,12 +52,10 @@ namespace Kursach.Algorithms
                     }
 
                     progress += part;
-                    //ConsoleUtility.WriteProgressBar(progress, true);
                 }
 
                 difference--;
             }
-
 
             var result = new List<List<int>>();
 
@@ -71,39 +64,21 @@ namespace Kursach.Algorithms
                 for (int j = 0; j < WorkersNum; j++)
                 {
                     if (optimalDistribution[i][j] == 1)
+                    {
                         result.Add(new List<int>
                         {
                             i, j
                         });
+                    }
                 }
             }
 
+            FindFinalDistribution(shift, optimalDistribution.AsReadOnly(), result);
 
-            //Console.WriteLine($"\n{new string('-', 40)}");
-
-            //Console.ForegroundColor = ConsoleColor.Red;
-            //Console.WriteLine($"MAX EFFICIENCY (1) = {maxDistributionEfficiency}");
-            //Console.ResetColor();
-            //Console.WriteLine($"{new string('-', 40)}\nOptimal distribution\n{new string('-', 40)}");
-
-            //OutputMatrix(optimalDistribution);
-
-            //Console.WriteLine(new string('-', 40));
-
-            //OutputFinalDistribution(shift, optimalDistribution.AsReadOnly());
-
-            var z = OutputFinalDistribution1(shift, optimalDistribution.AsReadOnly(), result);
-
-            //Console.ForegroundColor = ConsoleColor.Red;
-
-            //Console.WriteLine($"MAX EFFICIENCY (final) = {maxDistributionEfficiency + z}");
-            //Console.ResetColor();
-
-            //Console.WriteLine($"{new string('-', 40)}\n");
             return result;
         }
 
-        private int OutputFinalDistribution1(int shift, ReadOnlyCollection<List<int>> optimalDistribution, List<List<int>> result)
+        private int FindFinalDistribution(int shift, ReadOnlyCollection<List<int>> optimalDistribution, List<List<int>> result)
         {
             var unUsedWork = _data;
             for (var i = 0; i < WorkersNum; i++)
@@ -128,7 +103,7 @@ namespace Kursach.Algorithms
             return FindRemaining(unUsedWork, result);
         }
 
-        private int FindRemaining(IReadOnlyList<List<int>> efficiencyMatrix, List<List<int>> result) 
+        private int FindRemaining(IReadOnlyList<List<int>> efficiencyMatrix, List<List<int>> result)
         {
             var efficiency = 0;
             List<KeyValuePair<int, int>> indexes = new List<KeyValuePair<int, int>>();
@@ -155,19 +130,6 @@ namespace Kursach.Algorithms
 
                 efficiency += max;
             }
-
-            //for (int i = 0; i < WorkersNum; i++)
-            //{
-            //    Console.Write($"Worker {i}: ");
-            //    for (int j = 0; j < WorkAmount; j++)
-            //    {
-            //        Console.ForegroundColor = indexes.Exists(e => e.Key == i && e.Value == j) ? ConsoleColor.Green : ConsoleColor.DarkGray;
-            //        Console.Write($"{efficiencyMatrix[i][j]} ");
-            //        Console.ResetColor();
-            //    }
-
-            //    Console.WriteLine();
-            //}
 
             return efficiency;
         }
@@ -239,7 +201,10 @@ namespace Kursach.Algorithms
 
         public List<List<int>> Handle(List<List<int>> data)
         {
-            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
 
             WorkAmount = data.First().Count;
             WorkersNum = data.Count;

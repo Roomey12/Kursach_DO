@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kursach.Algorithms
+namespace Kursach.Interfaces
 {
     public interface IAlgorithm
     {

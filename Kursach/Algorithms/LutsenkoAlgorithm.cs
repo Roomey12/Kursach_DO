@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kursach.Interfaces;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -149,7 +151,9 @@ namespace Kursach.Algorithms
                                     links[j1] = markedJ;
                                 }
                                 if (j == -1 || mins[j1] < mins[j])
+                                {
                                     j = j1;
+                                }
                             }
                         }
 
