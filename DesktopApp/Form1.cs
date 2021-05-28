@@ -81,46 +81,60 @@ namespace DesktopApp
                     var list = new List<int>();
                     for (int j = 0; j < TasksCount; j++)
                     {
-                        list.Add(int.Parse(Controls[i + " " + j].Text));
+                        list.Add(Int32.Parse(Controls[i.ToString() + " " + j.ToString()].Text));
                     }
                     data.Add(list);
                 }
                 var dataCopy = data.Select(x => x.ToList()).ToList();
 
-                IAlgorithm algorithmHandler = null;
-
-                switch (algorithm)
-                {
-                    case Algorithm.Lutsenko:
-                        algorithmHandler = new LutsenkoAlgorithm();
-                        break;
-                    case Algorithm.Mansoury:
-                        algorithmHandler = new ElMansouryAlgorithm();
-                        break;
-                    case Algorithm.Greedy:
-                        algorithmHandler = new GreedyAlgorithm();
-                        break;
-                }
+                IAlgorithm algorithmHandler = new ElMansouryAlgorithm();// null;
+                var dataCopy2 = data.Select(x => x.ToList()).ToList();
 
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
                 var result = algorithmHandler.Handle(data);
 
+
                 stopwatch.Stop();
 
-                int cf = 0;
-                foreach (var res in result)
+                var z = result.OrderBy(e => e[1]).Aggregate("",
+                    (current, ints) => current + $"Работник {ints[0] + 1} - работа {ints[1] + 1}" + Environment.NewLine);
+
+                Controls.Add(new TextBox
                 {
-                    Controls[res[0] + " " + res[1]].BackColor = Color.LimeGreen;
-                    cf += dataCopy[res[0]][res[1]];
+                    Location = new Point(395, 587),
+                    Size = new Size(350, 350),
+                    Text = z,
+                    Multiline = true
+                });
+
+                Stopwatch stopwatch2 = new Stopwatch();
+                stopwatch2.Start();
+
+                var result2 = new GreedyAlgorithm().Handle(dataCopy2);
+
+                stopwatch2.Stop();
+
+
+                int cf = 0;
+                for (int i = 0; i < result.Count; i++)
+                {
+                    Controls[result[i][0].ToString() + " " + result[i][1].ToString()].BackColor = Color.LimeGreen;
+                    cf += dataCopy[result[i][0]][result[i][1]];
                 }
 
-                CreateCfControls(cf);
+                int cf2 = 0;
+                for (int i = 0; i < result2.Count; i++)
+                {
+                    cf2 += dataCopy[result2[i][0]][result2[i][1]];
+                }
+
+                CreateCfControls(cf, cf2);
 
                 DisableOutputButtons();
 
-                CreateTimeControl(stopwatch.Elapsed);
+                CreateTimeControl(stopwatch.Elapsed, stopwatch2.Elapsed);
 
                 ActiveControl = null;
             }
@@ -133,11 +147,12 @@ namespace DesktopApp
         private void randomButton_Click(object sender, EventArgs e)
         {
             var random = new Random();
+            var dispersion = 1;
             for (int i = 0; i < WorkersCount; i++)
             {
                 for (int j = 0; j < TasksCount; j++)
                 {
-                    Controls[i + " " + j].Text = random.Next(1, 20).ToString();
+                    Controls[i.ToString() + " " + j.ToString()].Text = ( + random.Next(-dispersion, dispersion + 1)).ToString();
                 }
             }
         }
@@ -147,37 +162,35 @@ namespace DesktopApp
             try
             {
                 var fileDialog = new OpenFileDialog();
-                if (fileDialog.ShowDialog() != DialogResult.OK)
+                if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    return;
-                }
+                    int[][] fileData = File.ReadAllLines(fileDialog.FileName)
+                       .Select(l => l.Split(' ').Select(i => int.Parse(i)).ToArray())
+                       .ToArray();
 
-                int[][] fileData = File.ReadAllLines(fileDialog.FileName)
-                    .Select(l => l.Split(' ').Select(int.Parse).ToArray())
-                    .ToArray();
+                    var workersCount = fileData.Length;
+                    var tasksCount = fileData.GroupBy(row => row.Length).Single().Key;
 
-                var workersCount = fileData.Length;
-                var tasksCount = fileData.GroupBy(row => row.Length).Single().Key;
+                    SetTasksAndWorkersCount(workersCount, tasksCount);
 
-                SetTasksAndWorkersCount(workersCount, tasksCount);
+                    ValidateInputData();
 
-                ValidateInputData();
+                    CreateMatrixControls();
 
-                CreateMatrixControls();
+                    DisableInputButtons();
 
-                DisableInputButtons();
+                    CreateCalculateLutsenkoButton();
 
-                CreateCalculateLutsenkoButton();
+                    CreateCalculateGreedyButton();
 
-                CreateCalculateGreedyButton();
+                    CreateCalculateMansouryButton();
 
-                CreateCalculateMansouryButton();
-
-                for (int i = 0; i < workersCount; i++)
-                {
-                    for (int j = 0; j < tasksCount; j++)
+                    for (int i = 0; i < workersCount; i++)
                     {
-                        Controls[i + " " + j].Text = fileData[i][j].ToString();
+                        for (int j = 0; j < tasksCount; j++)
+                        {
+                            Controls[i.ToString() + " " + j.ToString()].Text = fileData[i][j].ToString();
+                        }
                     }
                 }
             }
@@ -197,8 +210,8 @@ namespace DesktopApp
 
         private void ValidateInputData()
         {
-            TasksCount = int.Parse(tasksTextBox.Text);
-            WorkersCount = int.Parse(workersTextBox.Text);
+            TasksCount = Int32.Parse(tasksTextBox.Text);
+            WorkersCount = Int32.Parse(workersTextBox.Text);
 
             if (WorkersCount >= TasksCount)
             {
@@ -215,7 +228,7 @@ namespace DesktopApp
                 Location = new Point(506, 26),
                 Size = new Size(86, 39)
             };
-            calculateButton.Click += calculateLutsenkoButton_Click;
+            calculateButton.Click += new EventHandler(calculateLutsenkoButton_Click);
             Controls.Add(calculateButton);
         }
 
@@ -228,7 +241,7 @@ namespace DesktopApp
                 Location = new Point(622, 26),
                 Size = new Size(86, 39)
             };
-            calculateButton.Click += calculateMansouryButton_Click;
+            calculateButton.Click += new EventHandler(calculateMansouryButton_Click);
             Controls.Add(calculateButton);
         }
 
@@ -241,7 +254,7 @@ namespace DesktopApp
                 Location = new Point(738, 26),
                 Size = new Size(86, 39)
             };
-            calculateButton.Click += calculateGreedyButton_Click;
+            calculateButton.Click += new EventHandler(calculateGreedyButton_Click);
             Controls.Add(calculateButton);
         }
 
@@ -254,11 +267,11 @@ namespace DesktopApp
                 Location = new Point(854, 26),
                 Size = new Size(86, 39)
             };
-            randomButton.Click += randomButton_Click;
+            randomButton.Click += new EventHandler(randomButton_Click);
             Controls.Add(randomButton);
         }
 
-        private void CreateTimeControl(TimeSpan time)
+        private void CreateTimeControl(TimeSpan time, TimeSpan time2)
         {
             var timeLabel = new Label()
             {
@@ -277,6 +290,15 @@ namespace DesktopApp
             };
             Controls.Add(timeLabel);
             Controls.Add(timeTextBox);
+
+            var time2TextBox = new TextBox()
+            {
+                Name = "time2Label",
+                Text = time2.ToString(),
+                Location = new Point(1100, 26),
+                Size = new Size(100, 20)
+            };
+            Controls.Add(time2TextBox);
         }
 
         private void CreateMatrixControls()
@@ -305,7 +327,7 @@ namespace DesktopApp
                 {
                     var effTextBox = new TextBox()
                     {
-                        Name = i + " " + j,
+                        Name = i.ToString() + " " + j.ToString(),
                         Location = new Point(j * 75 + 54, i * 50 + 125),
                         Size = new Size(50, 10)
                     };
@@ -314,7 +336,7 @@ namespace DesktopApp
             }
         }
 
-        private void CreateCfControls(int cf)
+        private void CreateCfControls(int cf, int cf2)
         {
             var cfLabel = new Label()
             {
@@ -333,6 +355,16 @@ namespace DesktopApp
                 BackColor = Color.LightYellow
             };
             Controls.Add(cfTextBox);
+
+            var cf2TextBox = new TextBox()
+            {
+                Name = "result2TextBox",
+                Location = new Point(54, WorkersCount * 50 + 175),
+                Size = new Size(50, 10),
+                Text = cf2.ToString(),
+                BackColor = Color.LightYellow
+            };
+            Controls.Add(cf2TextBox);
         }
 
         private void SetTasksAndWorkersCount(int workersCount, int tasksCount)
@@ -357,6 +389,11 @@ namespace DesktopApp
             {
                 Controls["randomButton"].Enabled = false;
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

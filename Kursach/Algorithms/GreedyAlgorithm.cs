@@ -1,4 +1,5 @@
-﻿using Kursach.Interfaces;
+﻿using System;
+using Kursach.Interfaces;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -45,8 +46,8 @@ namespace Kursach.Algorithms
                 efficiency += max;
             }
 
+            //Console.WriteLine($"Greedy: {efficiency}");
             return indexes.Select(t => new List<int> { t.Key, t.Value }).ToList();
-
         }
 
         public List<List<int>> Handle(List<List<int>> data)

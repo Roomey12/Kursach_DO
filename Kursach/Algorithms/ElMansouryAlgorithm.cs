@@ -7,80 +7,91 @@ using System.Linq;
 
 namespace Kursach.Algorithms
 {
+
     public class ElMansouryAlgorithm : IAlgorithm
     {
-        private List<List<int>> _data { get; set; }
+        static void Output(List<List<int>> matrix)
+        {
+            for (int i = 0; i < matrix.Count; i++)
+            {
+                for (int j = 0; j < matrix.First().Count; j++)
+                {
+                    Console.Write($"{matrix[i][j]} ");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+        }
+
+        private List<List<int>> Data { get; set; }
         private List<List<List<int>>> PermutationMatrices { get; set; } = new();
         private int WorkAmount { get; set; }
         private int WorkersNum { get; set; }
 
         private List<List<int>> Start()
         {
-            GenerateAllMatrices();
-            return FindOptimalDistribution();
+            var jobs = new List<int>();
+            var finalResult = new List<List<int>>();
+
+            do
+            {
+                int shift;
+
+                var distributionMatrix = FindOptimalDistribution(Data, out shift);
+                
+                if(!distributionMatrix.Any()) break;
+                var tempResult = findResultList(distributionMatrix, shift);
+
+                ReSortJobs(finalResult, tempResult);
+                jobs = finalResult.Select(e => e[1]).ToList();
+
+                ReplaceFoundedJobsWithZeros(distributionMatrix, shift);
+            } while (jobs.Count != WorkAmount);
+
+
+            return finalResult;
         }
 
-        private List<List<int>> FindOptimalDistribution()
+        private void ReSortJobs(List<List<int>> oldJobsAndWorkers, List<List<int>> newJobsAndWorkes)
         {
-            var maxDistributionEfficiency = 0;
-            List<List<int>> optimalDistribution = new List<List<int>>();
+            // rabochiy | rabota
 
-            int difference = WorkAmount - WorkersNum;
-            int shift = -1;
-            double progress = 0;
-            double part = difference != 0 ? 100 / (difference * (double)PermutationMatrices.Count) : 100 / (double)PermutationMatrices.Count;
-
-            while (difference >= 0)
+            foreach (var newJobsAndWorker in newJobsAndWorkes)
             {
-                foreach (List<List<int>> permutationMatrix in PermutationMatrices)
+                //if (oldJobsAndWorkers.Exists(e => e[0] == newJobsAndWorker[0]))
+                //{
+                //    oldJobsAndWorkers.Add(newJobsAndWorker);
+
+                //    var oldAssigment = oldJobsAndWorkers.First(e => e[0] == newJobsAndWorker[0]);
+
+                //    if (oldAssigment[1] > newJobsAndWorker[1])
+                //    {
+                //        oldJobsAndWorkers.Remove(oldAssigment);
+                //        oldJobsAndWorkers.Add(newJobsAndWorker);
+                //    }
+                //}
+                //else
+                //{
+                //    oldJobsAndWorkers.Add(newJobsAndWorker);
+                //}
+
+                if (!oldJobsAndWorkers.Exists(e => e[1] == newJobsAndWorker[1]))
                 {
-                    var currentEfficiency = 0;
-
-                    for (var i = 0; i < WorkersNum; i++)
-                    {
-                        for (var j = 0; j < WorkersNum; j++)
-                        {
-                            currentEfficiency += _data[i][j + difference] * permutationMatrix[i][j];
-                        }
-                    }
-
-                    if (maxDistributionEfficiency < currentEfficiency)
-                    {
-                        maxDistributionEfficiency = currentEfficiency;
-                        optimalDistribution = permutationMatrix;
-                        shift = difference;
-                    }
-
-                    progress += part;
-                }
-
-                difference--;
-            }
-
-            var result = new List<List<int>>();
-
-            for (int i = 0; i < WorkersNum; i++)
-            {
-                for (int j = 0; j < WorkersNum; j++)
-                {
-                    if (optimalDistribution[i][j] == 1)
-                    {
-                        result.Add(new List<int>
-                        {
-                            i, j
-                        });
-                    }
+                    oldJobsAndWorkers.Add(newJobsAndWorker);
                 }
             }
-
-            FindFinalDistribution(shift, optimalDistribution.AsReadOnly(), result);
-
-            return result;
         }
 
-        private int FindFinalDistribution(int shift, ReadOnlyCollection<List<int>> optimalDistribution, List<List<int>> result)
+        private void ReplaceFoundedJobsWithZeros(List<List<int>> distributionMatrix, int shift)
         {
-            var unUsedWork = _data;
+            if (shift == -1)
+                shift = 0;
+
+            var dataCopy2 = Data.Select(x => x.ToList()).ToList();
+
+            var jobs = new List<int>();
+
             for (var i = 0; i < WorkersNum; i++)
             {
                 var x = 0;
@@ -92,46 +103,88 @@ namespace Kursach.Algorithms
                     if (j >= shift && x < WorkersNum)
                     {
                         x++;
-                        Console.ForegroundColor = optimalDistribution[i][j - shift] == 1 ? ConsoleColor.Green : ConsoleColor.Gray;
-                        unUsedWork[i][j] = 0;
+
+                        if (distributionMatrix[i][j - shift] == 1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+
+                        dataCopy2[i][j] = 0;
+                        jobs.Add(j);
                     }
 
+                    //Console.Write(Data[i][j] + " ");
                     Console.ResetColor();
                 }
+
+                //Console.WriteLine();
             }
 
-            return FindRemaining(unUsedWork, result);
+            Data = dataCopy2;
+        }
+        
+        private List<List<int>> findResultList(List<List<int>> distMatrix, int shift)
+        {
+            var result = new List<List<int>>();
+
+            for (int i = 0; i < WorkersNum; i++)
+            {
+                for (int j = 0; j < WorkersNum; j++)
+                {
+                    if (distMatrix[i][j] == 1)
+                    {
+                        result.Add(new List<int>
+                        {
+                            i, j + shift
+                        });
+                    }
+                }
+            }
+
+            return result;
         }
 
-        private int FindRemaining(IReadOnlyList<List<int>> efficiencyMatrix, List<List<int>> result)
+        private List<List<int>> FindOptimalDistribution(List<List<int>> Data, out int shift)
         {
-            var efficiency = 0;
-            List<KeyValuePair<int, int>> indexes = new List<KeyValuePair<int, int>>();
+            //Console.WriteLine("efficiency");
+            //Output(Data);
 
-            for (int i = 0; i < WorkAmount; i++)
+            var maxDistributionEfficiency = 0;
+            List<List<int>> optimalDistribution = new List<List<int>>();
+
+            int difference = WorkAmount - WorkersNum;
+            shift = -1;
+
+            while (difference >= 0)
             {
-                var max = efficiencyMatrix[0][i];
-                int J = 0;
-
-                for (int j = 1; j < WorkersNum; j++)
+                foreach (List<List<int>> permutationMatrix in PermutationMatrices)
                 {
-                    if (efficiencyMatrix[j][i] > max)
+                    var currentEfficiency = 0;
+
+                    for (var i = 0; i < WorkersNum; i++)
                     {
-                        J = j;
-                        max = efficiencyMatrix[j][i];
+                        for (var j = 0; j < WorkersNum; j++)
+                        {
+                            currentEfficiency += Data[i][j + difference] * permutationMatrix[i][j];
+                        }
+                    }
+
+                    if (maxDistributionEfficiency < currentEfficiency)
+                    {
+                        maxDistributionEfficiency = currentEfficiency;
+                        optimalDistribution = permutationMatrix;
+                        shift = difference;
                     }
                 }
 
-                if (efficiencyMatrix[J][i] != 0)
-                {
-                    result.Add(new List<int> { J, i });
-                    indexes.Add(new KeyValuePair<int, int>(J, i));
-                }
-
-                efficiency += max;
+                difference--;
             }
 
-            return efficiency;
+            return optimalDistribution;
         }
 
         #region Zero Matrix generation
@@ -208,7 +261,8 @@ namespace Kursach.Algorithms
 
             WorkAmount = data.First().Count;
             WorkersNum = data.Count;
-            _data = data;
+            GenerateAllMatrices();
+            Data = data;
 
             return Start();
         }
